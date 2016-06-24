@@ -32,36 +32,35 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
+## cacheSolve:
+## accepts a product of makeCacheMatrix (or list with similar contents)
+## and returns inverse matrix of it. Function checks whether cached inverse
+## matrix already exists in the given object. If so, cached result is returned.
+## Otherwise newly computed inverse matrix is stored into the object.
+##
+## If x doesn't look like a product of makeCacheMatrix(), error is thrown
 
 cacheSolve <- function(x, ...) {
-    checkNconvert <- function(candidate){
+    check <- function(candidate){
         ## We check for object's interface now
         ## We do not take any extensions possible extensions
         ## of valid object into account
         validObject <- makeCacheMatrix()
         if(!identical(sapply(validObject, class), 
-                      sapply(candidate, class))){
-            if(is.matrix(candidate))
-            {
-                warning("Plain matrix given. Converting to cacheable with makeCacheMatrix")
-                return (makeCacheMatrix(candidate))
-            }
-            stop("Argument must be a matrix of a product of makeCacheMatrix()")
-        }
-        return (candidate)
+                      sapply(candidate, class)))
+            stop("x must be a product of makeCacheMatrix()")
     }
     
-    ## check x for validity and convert to valid object if possible 
-    obj <- checkNconvert(x)
+    ## check x for validity
+    check(x)
     ## Return a matrix that is the inverse of 'x'
-    m <- obj$getsolve()
+    m <- x$getsolve()
     if(!is.null(m)) {
         message("getting cached data")
         return(m)
     }
-    data <- obj$get()
+    data <- x$get()
     m <- solve(data, ...)
-    obj$setsolve(m)
+    x$setsolve(m)
     m
 }
