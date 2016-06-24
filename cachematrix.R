@@ -1,6 +1,3 @@
-## Put comments here that give an overall description of what your
-## functions do
-
 ## makeCacheMatrix stores given matrix as special object
 ## with some sort of getter and setter for the value itself
 ## and inverted matrix
